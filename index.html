@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuestionario de Machine Learning</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            color: #1f2937;
+        }
+        .container {
+            max-width: 800px;
+            padding: 2rem;
+        }
+        .card {
+            background-color: #ffffff;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .question-card {
+            background-color: #f9fafb;
+            border-radius: 1rem;
+            padding: 1.5rem;
+        }
+        .answer-label {
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+        }
+        .answer-label:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        input[type="radio"]:checked + .answer-label {
+            background-color: #2563eb;
+            color: #ffffff;
+            border-color: #2563eb;
+        }
+        .correct-answer-label {
+            background-color: #10b981;
+            color: #ffffff;
+            border-color: #10b981;
+        }
+        .incorrect-answer-label {
+            background-color: #ef4444;
+            color: #ffffff;
+            border-color: #ef4444;
+        }
+        .validation-message {
+            margin-top: 1rem;
+            font-weight: 600;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+        }
+        .validation-correct {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+        .validation-incorrect {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen">
+    <div class="container mx-auto p-4 md:p-8">
+        <div class="card p-6 md:p-10">
+            <h1 class="text-3xl md:text-4xl font-bold text-center mb-2 text-blue-800">Cuestionario: ML Supervisado y No Supervisado</h1>
+            <p class="text-center text-gray-600 mb-8">Selecciona una respuesta y valídala para obtener retroalimentación instantánea.</p>
+
+            <form id="quizForm">
+                <!-- Bloque 1: Conceptos básicos -->
+                <div class="mb-8">
+                    <h2 class="text-2xl font-semibold mb-4 text-blue-700">Bloque 1. Conceptos básicos</h2>
+                    
+                    <!-- Pregunta 1 -->
+                    <div class="question-card mb-6" data-question-id="q1">
+                        <p class="font-medium text-gray-800 mb-4">1. ¿Qué diferencia principal existe entre el aprendizaje supervisado y no supervisado?</p>
+                        <div class="space-y-3">
+                            <div>
+                                <input type="radio" id="q1a" name="q1" value="Supervisado usa datos etiquetados y no supervisado no" class="hidden">
+                                <label for="q1a" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Supervisado usa datos etiquetados y no supervisado no</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q1b" name="q1" value="Supervisado busca patrones ocultos" class="hidden">
+                                <label for="q1b" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Supervisado busca patrones ocultos</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q1c" name="q1" value="No supervisado predice valores" class="hidden">
+                                <label for="q1c" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">No supervisado predice valores</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q1d" name="q1" value="No hay diferencia" class="hidden">
+                                <label for="q1d" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">No hay diferencia</label>
+                            </div>
+                        </div>
+                        <div class="flex justify-center mt-4">
+                            <button type="button" class="validate-btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-full shadow-md transition duration-300 ease-in-out transform hover:scale-105" data-question="q1">Validar</button>
+                        </div>
+                        <div id="q1_feedback" class="validation-message hidden"></div>
+                    </div>
+
+                    <!-- Pregunta 2 -->
+                    <div class="question-card mb-6" data-question-id="q2">
+                        <p class="font-medium text-gray-800 mb-4">2. ¿Cuál es el objetivo principal del aprendizaje supervisado?</p>
+                        <div class="space-y-3">
+                            <div>
+                                <input type="radio" id="q2a" name="q2" value="Identificar grupos similares en los datos" class="hidden">
+                                <label for="q2a" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Identificar grupos similares en los datos</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q2b" name="q2" value="Predecir o clasificar usando datos con etiquetas" class="hidden">
+                                <label for="q2b" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Predecir o clasificar usando datos con etiquetas</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q2c" name="q2" value="Reducir dimensionalidad" class="hidden">
+                                <label for="q2c" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Reducir dimensionalidad</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q2d" name="q2" value="Explorar patrones sin variables objetivo" class="hidden">
+                                <label for="q2d" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Explorar patrones sin variables objetivo</label>
+                            </div>
+                        </div>
+                        <div class="flex justify-center mt-4">
+                            <button type="button" class="validate-btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-full shadow-md transition duration-300 ease-in-out transform hover:scale-105" data-question="q2">Validar</button>
+                        </div>
+                        <div id="q2_feedback" class="validation-message hidden"></div>
+                    </div>
+                    
+                    <!-- Pregunta 3 -->
+                    <div class="question-card mb-6" data-question-id="q3">
+                        <p class="font-medium text-gray-800 mb-4">3. ¿Cuál es el objetivo principal del aprendizaje no supervisado?</p>
+                        <div class="space-y-3">
+                            <div>
+                                <input type="radio" id="q3a" name="q3" value="Predecir valores numéricos" class="hidden">
+                                <label for="q3a" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Predecir valores numéricos</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q3b" name="q3" value="Clasificar en categorías conocidas" class="hidden">
+                                <label for="q3b" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Clasificar en categorías conocidas</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q3c" name="q3" value="Descubrir patrones y agrupaciones en los datos" class="hidden">
+                                <label for="q3c" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Descubrir patrones y agrupaciones en los datos</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q3d" name="q3" value="Medir el error de predicción" class="hidden">
+                                <label for="q3d" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Medir el error de predicción</label>
+                            </div>
+                        </div>
+                        <div class="flex justify-center mt-4">
+                            <button type="button" class="validate-btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-full shadow-md transition duration-300 ease-in-out transform hover:scale-105" data-question="q3">Validar</button>
+                        </div>
+                        <div id="q3_feedback" class="validation-message hidden"></div>
+                    </div>
+
+                    <!-- Pregunta 4 -->
+                    <div class="question-card mb-6" data-question-id="q4">
+                        <p class="font-medium text-gray-800 mb-4">4. ¿Cuál de los siguientes es un ejemplo de algoritmo supervisado?</p>
+                        <div class="space-y-3">
+                            <div>
+                                <input type="radio" id="q4a" name="q4" value="Árboles de decisión" class="hidden">
+                                <label for="q4a" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Árboles de decisión</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q4b" name="q4" value="K-means" class="hidden">
+                                <label for="q4b" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">K-means</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q4c" name="q4" value="Clustering jerárquico" class="hidden">
+                                <label for="q4c" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Clustering jerárquico</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q4d" name="q4" value="PCA" class="hidden">
+                                <label for="q4d" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">PCA</label>
+                            </div>
+                        </div>
+                        <div class="flex justify-center mt-4">
+                            <button type="button" class="validate-btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-full shadow-md transition duration-300 ease-in-out transform hover:scale-105" data-question="q4">Validar</button>
+                        </div>
+                        <div id="q4_feedback" class="validation-message hidden"></div>
+                    </div>
+
+                    <!-- Pregunta 5 -->
+                    <div class="question-card mb-6" data-question-id="q5">
+                        <p class="font-medium text-gray-800 mb-4">5. ¿Cuál de los siguientes es un ejemplo de algoritmo no supervisado?</p>
+                        <div class="space-y-3">
+                            <div>
+                                <input type="radio" id="q5a" name="q5" value="Regresión logística" class="hidden">
+                                <label for="q5a" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Regresión logística</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q5b" name="q5" value="K-means" class="hidden">
+                                <label for="q5b" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">K-means</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q5c" name="q5" value="Bosques aleatorios" class="hidden">
+                                <label for="q5c" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Bosques aleatorios</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q5d" name="q5" value="Regresión lineal" class="hidden">
+                                <label for="q5d" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Regresión lineal</label>
+                            </div>
+                        </div>
+                        <div class="flex justify-center mt-4">
+                            <button type="button" class="validate-btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-full shadow-md transition duration-300 ease-in-out transform hover:scale-105" data-question="q5">Validar</button>
+                        </div>
+                        <div id="q5_feedback" class="validation-message hidden"></div>
+                    </div>
+                </div>
+
+                <!-- Bloque 2: Modelos supervisados -->
+                <div class="mb-8">
+                    <h2 class="text-2xl font-semibold mb-4 text-blue-700">Bloque 2. Modelos supervisados</h2>
+                    
+                    <!-- Pregunta 6 -->
+                    <div class="question-card mb-6" data-question-id="q6">
+                        <p class="font-medium text-gray-800 mb-4">6. ¿Qué tipo de problema resuelve la regresión lineal?</p>
+                        <div class="space-y-3">
+                            <div>
+                                <input type="radio" id="q6a" name="q6" value="Predicción de valores numéricos" class="hidden">
+                                <label for="q6a" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Predicción de valores numéricos</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q6b" name="q6" value="Agrupación de clientes" class="hidden">
+                                <label for="q6b" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Agrupación de clientes</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q6c" name="q6" value="Clasificación de correos spam/no spam" class="hidden">
+                                <label for="q6c" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Clasificación de correos spam/no spam</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q6d" name="q6" value="Reducción de variables" class="hidden">
+                                <label for="q6d" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Reducción de variables</label>
+                            </div>
+                        </div>
+                        <div class="flex justify-center mt-4">
+                            <button type="button" class="validate-btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-full shadow-md transition duration-300 ease-in-out transform hover:scale-105" data-question="q6">Validar</button>
+                        </div>
+                        <div id="q6_feedback" class="validation-message hidden"></div>
+                    </div>
+
+                    <!-- Pregunta 7 -->
+                    <div class="question-card mb-6" data-question-id="q7">
+                        <p class="font-medium text-gray-800 mb-4">7. ¿Qué tipo de problema resuelve la regresión logística?</p>
+                        <div class="space-y-3">
+                            <div>
+                                <input type="radio" id="q7a" name="q7" value="Clasificación binaria" class="hidden">
+                                <label for="q7a" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Clasificación binaria</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q7b" name="q7" value="Predicción de números continuos" class="hidden">
+                                <label for="q7b" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Predicción de números continuos</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q7c" name="q7" value="Agrupación de datos" class="hidden">
+                                <label for="q7c" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Agrupación de datos</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q7d" name="q7" value="Reducción de dimensionalidad" class="hidden">
+                                <label for="q7d" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Reducción de dimensionalidad</label>
+                            </div>
+                        </div>
+                        <div class="flex justify-center mt-4">
+                            <button type="button" class="validate-btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-full shadow-md transition duration-300 ease-in-out transform hover:scale-105" data-question="q7">Validar</button>
+                        </div>
+                        <div id="q7_feedback" class="validation-message hidden"></div>
+                    </div>
+
+                    <!-- Pregunta 8 -->
+                    <div class="question-card mb-6" data-question-id="q8">
+                        <p class="font-medium text-gray-800 mb-4">8. Un hospital quiere predecir si un paciente tendrá complicaciones después de una cirugía (sí/no). ¿Qué modelo supervisado sería adecuado?</p>
+                        <div class="space-y-3">
+                            <div>
+                                <input type="radio" id="q8a" name="q8" value="Regresión logística" class="hidden">
+                                <label for="q8a" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Regresión logística</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q8b" name="q8" value="K-means" class="hidden">
+                                <label for="q8b" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">K-means</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q8c" name="q8" value="Clustering jerárquico" class="hidden">
+                                <label for="q8c" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Clustering jerárquico</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q8d" name="q8" value="PCA" class="hidden">
+                                <label for="q8d" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">PCA</label>
+                            </div>
+                        </div>
+                        <div class="flex justify-center mt-4">
+                            <button type="button" class="validate-btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-full shadow-md transition duration-300 ease-in-out transform hover:scale-105" data-question="q8">Validar</button>
+                        </div>
+                        <div id="q8_feedback" class="validation-message hidden"></div>
+                    </div>
+
+                    <!-- Pregunta 9 -->
+                    <div class="question-card mb-6" data-question-id="q9">
+                        <p class="font-medium text-gray-800 mb-4">9. Una empresa quiere predecir las ventas de los próximos meses en función de la publicidad y la temporada. ¿Qué modelo se recomienda?</p>
+                        <div class="space-y-3">
+                            <div>
+                                <input type="radio" id="q9a" name="q9" value="Regresión lineal" class="hidden">
+                                <label for="q9a" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Regresión lineal</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q9b" name="q9" value="Regresión logística" class="hidden">
+                                <label for="q9b" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Regresión logística</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q9c" name="q9" value="K-means" class="hidden">
+                                <label for="q9c" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">K-means</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q9d" name="q9" value="Árbol de clusters" class="hidden">
+                                <label for="q9d" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Árbol de clusters</label>
+                            </div>
+                        </div>
+                        <div class="flex justify-center mt-4">
+                            <button type="button" class="validate-btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-full shadow-md transition duration-300 ease-in-out transform hover:scale-105" data-question="q9">Validar</button>
+                        </div>
+                        <div id="q9_feedback" class="validation-message hidden"></div>
+                    </div>
+
+                    <!-- Pregunta 10 -->
+                    <div class="question-card mb-6" data-question-id="q10">
+                        <p class="font-medium text-gray-800 mb-4">10. ¿Qué algoritmo supervisado es útil para problemas de clasificación con reglas fáciles de interpretar?</p>
+                        <div class="space-y-3">
+                            <div>
+                                <input type="radio" id="q10a" name="q10" value="Árboles de decisión" class="hidden">
+                                <label for="q10a" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Árboles de decisión</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q10b" name="q10" value="PCA" class="hidden">
+                                <label for="q10b" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">PCA</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q10c" name="q10" value="K-means" class="hidden">
+                                <label for="q10c" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">K-means</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q10d" name="q10" value="Clustering jerárquico" class="hidden">
+                                <label for="q10d" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Clustering jerárquico</label>
+                            </div>
+                        </div>
+                        <div class="flex justify-center mt-4">
+                            <button type="button" class="validate-btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-full shadow-md transition duration-300 ease-in-out transform hover:scale-105" data-question="q10">Validar</button>
+                        </div>
+                        <div id="q10_feedback" class="validation-message hidden"></div>
+                    </div>
+
+                    <!-- Pregunta 11 -->
+                    <div class="question-card mb-6" data-question-id="q11">
+                        <p class="font-medium text-gray-800 mb-4">11. ¿Qué modelo supervisado es ideal para recomendaciones basadas en similitudes entre usuarios?</p>
+                        <div class="space-y-3">
+                            <div>
+                                <input type="radio" id="q11a" name="q11" value="KNN (K vecinos más cercanos)" class="hidden">
+                                <label for="q11a" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">KNN (K vecinos más cercanos)</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q11b" name="q11" value="Regresión logística" class="hidden">
+                                <label for="q11b" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Regresión logística</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q11c" name="q11" value="K-means" class="hidden">
+                                <label for="q11c" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">K-means</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q11d" name="q11" value="Árboles de decisión" class="hidden">
+                                <label for="q11d" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Árboles de decisión</label>
+                            </div>
+                        </div>
+                        <div class="flex justify-center mt-4">
+                            <button type="button" class="validate-btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-full shadow-md transition duration-300 ease-in-out transform hover:scale-105" data-question="q11">Validar</button>
+                        </div>
+                        <div id="q11_feedback" class="validation-message hidden"></div>
+                    </div>
+
+                    <!-- Pregunta 12 -->
+                    <div class="question-card mb-6" data-question-id="q12">
+                        <p class="font-medium text-gray-800 mb-4">12. ¿Qué técnica supervisada combina varios árboles de decisión para mejorar la predicción?</p>
+                        <div class="space-y-3">
+                            <div>
+                                <input type="radio" id="q12a" name="q12" value="Bosques aleatorios" class="hidden">
+                                <label for="q12a" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Bosques aleatorios</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q12b" name="q12" value="Regresión polinómica" class="hidden">
+                                <label for="q12b" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Regresión polinómica</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q12c" name="q12" value="PCA" class="hidden">
+                                <label for="q12c" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">PCA</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q12d" name="q12" value="K-means" class="hidden">
+                                <label for="q12d" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">K-means</label>
+                            </div>
+                        </div>
+                        <div class="flex justify-center mt-4">
+                            <button type="button" class="validate-btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-full shadow-md transition duration-300 ease-in-out transform hover:scale-105" data-question="q12">Validar</button>
+                        </div>
+                        <div id="q12_feedback" class="validation-message hidden"></div>
+                    </div>
+                </div>
+
+                <!-- Bloque 3: Modelos no supervisados -->
+                <div class="mb-8">
+                    <h2 class="text-2xl font-semibold mb-4 text-blue-700">Bloque 3. Modelos no supervisados</h2>
+                    
+                    <!-- Pregunta 13 -->
+                    <div class="question-card mb-6" data-question-id="q13">
+                        <p class="font-medium text-gray-800 mb-4">13. Una tienda quiere segmentar a sus clientes para campañas de marketing sin conocer sus categorías previamente. ¿Qué técnica usaría?</p>
+                        <div class="space-y-3">
+                            <div>
+                                <input type="radio" id="q13a" name="q13" value="K-means" class="hidden">
+                                <label for="q13a" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">K-means</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q13b" name="q13" value="Regresión logística" class="hidden">
+                                <label for="q13b" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Regresión logística</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q13c" name="q13" value="Bosques aleatorios" class="hidden">
+                                <label for="q13c" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Bosques aleatorios</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q13d" name="q13" value="Árboles de decisión" class="hidden">
+                                <label for="q13d" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Árboles de decisión</label>
+                            </div>
+                        </div>
+                        <div class="flex justify-center mt-4">
+                            <button type="button" class="validate-btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-full shadow-md transition duration-300 ease-in-out transform hover:scale-105" data-question="q13">Validar</button>
+                        </div>
+                        <div id="q13_feedback" class="validation-message hidden"></div>
+                    </div>
+
+                    <!-- Pregunta 14 -->
+                    <div class="question-card mb-6" data-question-id="q14">
+                        <p class="font-medium text-gray-800 mb-4">14. Una universidad quiere analizar grupos de estudiantes según sus hábitos de estudio, sin etiquetas previas. ¿Qué técnica aplicar?</p>
+                        <div class="space-y-3">
+                            <div>
+                                <input type="radio" id="q14a" name="q14" value="Clustering jerárquico" class="hidden">
+                                <label for="q14a" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Clustering jerárquico</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q14b" name="q14" value="Regresión logística" class="hidden">
+                                <label for="q14b" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Regresión logística</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q14c" name="q14" value="Árbol de decisión" class="hidden">
+                                <label for="q14c" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Árbol de decisión</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q14d" name="q14" value="Regresión lineal" class="hidden">
+                                <label for="q14d" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Regresión lineal</label>
+                            </div>
+                        </div>
+                        <div class="flex justify-center mt-4">
+                            <button type="button" class="validate-btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-full shadow-md transition duration-300 ease-in-out transform hover:scale-105" data-question="q14">Validar</button>
+                        </div>
+                        <div id="q14_feedback" class="validation-message hidden"></div>
+                    </div>
+
+                    <!-- Pregunta 15 -->
+                    <div class="question-card mb-6" data-question-id="q15">
+                        <p class="font-medium text-gray-800 mb-4">15. ¿Qué técnica no supervisada utiliza un gráfico llamado dendrograma para visualizar agrupaciones?</p>
+                        <div class="space-y-3">
+                            <div>
+                                <input type="radio" id="q15a" name="q15" value="Clustering jerárquico" class="hidden">
+                                <label for="q15a" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Clustering jerárquico</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q15b" name="q15" value="Regresión logística" class="hidden">
+                                <label for="q15b" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Regresión logística</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q15c" name="q15" value="Bosques aleatorios" class="hidden">
+                                <label for="q15c" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Bosques aleatorios</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q15d" name="q15" value="Árboles de decisión" class="hidden">
+                                <label for="q15d" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Árboles de decisión</label>
+                            </div>
+                        </div>
+                        <div class="flex justify-center mt-4">
+                            <button type="button" class="validate-btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-full shadow-md transition duration-300 ease-in-out transform hover:scale-105" data-question="q15">Validar</button>
+                        </div>
+                        <div id="q15_feedback" class="validation-message hidden"></div>
+                    </div>
+
+                    <!-- Pregunta 16 -->
+                    <div class="question-card mb-6" data-question-id="q16">
+                        <p class="font-medium text-gray-800 mb-4">16. Una aplicación de música quiere recomendar canciones agrupando usuarios con gustos similares. ¿Qué técnica sería adecuada?</p>
+                        <div class="space-y-3">
+                            <div>
+                                <input type="radio" id="q16a" name="q16" value="K-means" class="hidden">
+                                <label for="q16a" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">K-means</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q16b" name="q16" value="Regresión logística" class="hidden">
+                                <label for="q16b" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Regresión logística</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q16c" name="q16" value="Árboles de decisión" class="hidden">
+                                <label for="q16c" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Árboles de decisión</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q16d" name="q16" value="SVM" class="hidden">
+                                <label for="q16d" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">SVM</label>
+                            </div>
+                        </div>
+                        <div class="flex justify-center mt-4">
+                            <button type="button" class="validate-btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-full shadow-md transition duration-300 ease-in-out transform hover:scale-105" data-question="q16">Validar</button>
+                        </div>
+                        <div id="q16_feedback" class="validation-message hidden"></div>
+                    </div>
+
+                    <!-- Pregunta 17 -->
+                    <div class="question-card mb-6" data-question-id="q17">
+                        <p class="font-medium text-gray-800 mb-4">17. Una empresa de salud quiere identificar patrones en datos genéticos para detectar biomarcadores sin etiquetas. ¿Qué enfoque se aplica?</p>
+                        <div class="space-y-3">
+                            <div>
+                                <input type="radio" id="q17a" name="q17" value="Aprendizaje no supervisado" class="hidden">
+                                <label for="q17a" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Aprendizaje no supervisado</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q17b" name="q17" value="Aprendizaje supervisado" class="hidden">
+                                <label for="q17b" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Aprendizaje supervisado</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q17c" name="q17" value="Regresión logística" class="hidden">
+                                <label for="q17c" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Regresión logística</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q17d" name="q17" value="Árbol de decisión" class="hidden">
+                                <label for="q17d" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Árbol de decisión</label>
+                            </div>
+                        </div>
+                        <div class="flex justify-center mt-4">
+                            <button type="button" class="validate-btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-full shadow-md transition duration-300 ease-in-out transform hover:scale-105" data-question="q17">Validar</button>
+                        </div>
+                        <div id="q17_feedback" class="validation-message hidden"></div>
+                    </div>
+
+                    <!-- Pregunta 18 -->
+                    <div class="question-card mb-6" data-question-id="q18">
+                        <p class="font-medium text-gray-800 mb-4">18. ¿Qué técnica no supervisada se usa para reducir la dimensionalidad y facilitar la visualización de datos complejos?</p>
+                        <div class="space-y-3">
+                            <div>
+                                <input type="radio" id="q18a" name="q18" value="PCA (Análisis de Componentes Principales)" class="hidden">
+                                <label for="q18a" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">PCA (Análisis de Componentes Principales)</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q18b" name="q18" value="Regresión logística" class="hidden">
+                                <label for="q18b" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Regresión logística</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q18c" name="q18" value="Árboles de decisión" class="hidden">
+                                <label for="q18c" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Árboles de decisión</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q18d" name="q18" value="Bosques aleatorios" class="hidden">
+                                <label for="q18d" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Bosques aleatorios</label>
+                            </div>
+                        </div>
+                        <div class="flex justify-center mt-4">
+                            <button type="button" class="validate-btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-full shadow-md transition duration-300 ease-in-out transform hover:scale-105" data-question="q18">Validar</button>
+                        </div>
+                        <div id="q18_feedback" class="validation-message hidden"></div>
+                    </div>
+                </div>
+
+                <!-- Bloque 4: Métricas y evaluación -->
+                <div class="mb-8">
+                    <h2 class="text-2xl font-semibold mb-4 text-blue-700">Bloque 4. Métricas y evaluación</h2>
+                    
+                    <!-- Pregunta 19 -->
+                    <div class="question-card mb-6" data-question-id="q19">
+                        <p class="font-medium text-gray-800 mb-4">19. ¿Qué métrica se utiliza comúnmente para medir la precisión de un modelo de clasificación supervisada?</p>
+                        <div class="space-y-3">
+                            <div>
+                                <input type="radio" id="q19a" name="q19" value="Accuracy" class="hidden">
+                                <label for="q19a" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Accuracy</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q19b" name="q19" value="MSE" class="hidden">
+                                <label for="q19b" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">MSE</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q19c" name="q19" value="PCA" class="hidden">
+                                <label for="q19c" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">PCA</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q19d" name="q19" value="Método del codo" class="hidden">
+                                <label for="q19d" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Método del codo</label>
+                            </div>
+                        </div>
+                        <div class="flex justify-center mt-4">
+                            <button type="button" class="validate-btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-full shadow-md transition duration-300 ease-in-out transform hover:scale-105" data-question="q19">Validar</button>
+                        </div>
+                        <div id="q19_feedback" class="validation-message hidden"></div>
+                    </div>
+
+                    <!-- Pregunta 20 -->
+                    <div class="question-card mb-6" data-question-id="q20">
+                        <p class="font-medium text-gray-800 mb-4">20. ¿Qué método se utiliza para elegir el número adecuado de clusters en K-means?</p>
+                        <div class="space-y-3">
+                            <div>
+                                <input type="radio" id="q20a" name="q20" value="Método del codo" class="hidden">
+                                <label for="q20a" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Método del codo</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q20b" name="q20" value="Accuracy" class="hidden">
+                                <label for="q20b" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Accuracy</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q20c" name="q20" value="Regresión logística" class="hidden">
+                                <label for="q20c" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Regresión logística</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="q20d" name="q20" value="Árbol de decisión" class="hidden">
+                                <label for="q20d" class="answer-label block p-3 border-2 border-gray-300 rounded-xl font-medium">Árbol de decisión</label>
+                            </div>
+                        </div>
+                        <div class="flex justify-center mt-4">
+                            <button type="button" class="validate-btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-full shadow-md transition duration-300 ease-in-out transform hover:scale-105" data-question="q20">Validar</button>
+                        </div>
+                        <div id="q20_feedback" class="validation-message hidden"></div>
+                    </div>
+                </div>
+
+                <div id="messageBox" class="fixed inset-0 bg-gray-900 bg-opacity-50 hidden items-center justify-center p-4">
+                    <div class="bg-white rounded-2xl p-6 shadow-xl max-w-sm w-full text-center transform transition-all scale-95 opacity-0">
+                        <p id="messageText" class="text-lg font-semibold text-gray-800 mb-4"></p>
+                        <button onclick="document.getElementById('messageBox').classList.add('hidden')" class="bg-blue-600 text-white font-bold py-2 px-6 rounded-full transition-colors hover:bg-blue-700">Cerrar</button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        // Definir las respuestas correctas
+        const correctAnswers = {
+            q1: "Supervisado usa datos etiquetados y no supervisado no",
+            q2: "Predecir o clasificar usando datos con etiquetas",
+            q3: "Descubrir patrones y agrupaciones en los datos",
+            q4: "Árboles de decisión",
+            q5: "K-means",
+            q6: "Predicción de valores numéricos",
+            q7: "Clasificación binaria",
+            q8: "Regresión logística",
+            q9: "Regresión lineal",
+            q10: "Árboles de decisión",
+            q11: "KNN (K vecinos más cercanos)",
+            q12: "Bosques aleatorios",
+            q13: "K-means",
+            q14: "Clustering jerárquico",
+            q15: "Clustering jerárquico",
+            q16: "K-means",
+            q17: "Aprendizaje no supervisado",
+            q18: "PCA (Análisis de Componentes Principales)",
+            q19: "Accuracy",
+            q20: "Método del codo"
+        };
+
+        // Función para mostrar mensajes de advertencia o éxito
+        function showMessage(text) {
+            const messageBox = document.getElementById('messageBox');
+            const messageText = document.getElementById('messageText');
+            messageText.textContent = text;
+            messageBox.classList.remove('hidden');
+            // Animación
+            setTimeout(() => {
+                messageBox.querySelector('div').classList.remove('scale-95', 'opacity-0');
+                messageBox.querySelector('div').classList.add('scale-100', 'opacity-100');
+            }, 10);
+        }
+
+        // Agregar listeners a todos los botones de validación
+        document.querySelectorAll('.validate-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const questionId = this.dataset.question;
+                const questionElement = document.querySelector(`[data-question-id="${questionId}"]`);
+                const selectedAnswer = questionElement.querySelector(`input[name="${questionId}"]:checked`);
+                const feedbackElement = document.getElementById(`${questionId}_feedback`);
+
+                // Limpiar retroalimentación anterior
+                feedbackElement.classList.add('hidden');
+                feedbackElement.classList.remove('validation-correct', 'validation-incorrect');
+                feedbackElement.textContent = '';
+                
+                if (!selectedAnswer) {
+                    showMessage("Por favor, selecciona una opción antes de validar.");
+                    return;
+                }
+                
+                const isCorrect = selectedAnswer.value === correctAnswers[questionId];
+                
+                // Marcar la respuesta seleccionada y la correcta
+                const labels = questionElement.querySelectorAll('label');
+                labels.forEach(label => {
+                    const inputId = label.getAttribute('for');
+                    const inputElement = document.getElementById(inputId);
+                    
+                    if (inputElement.value === selectedAnswer.value) {
+                        label.classList.add(isCorrect ? 'correct-answer-label' : 'incorrect-answer-label');
+                    }
+                    if (inputElement.value === correctAnswers[questionId]) {
+                        label.classList.add('correct-answer-label');
+                    }
+                    label.classList.remove('border-gray-300');
+                });
+
+                // Mostrar mensaje de retroalimentación
+                feedbackElement.classList.remove('hidden');
+                if (isCorrect) {
+                    feedbackElement.textContent = "¡Respuesta correcta! 🎉";
+                    feedbackElement.classList.add('validation-correct');
+                } else {
+                    feedbackElement.textContent = `Respuesta incorrecta. La respuesta correcta es: "${correctAnswers[questionId]}".`;
+                    feedbackElement.classList.add('validation-incorrect');
+                }
+
+                // Deshabilitar los inputs de radio y el botón de validación
+                questionElement.querySelectorAll('input[type="radio"]').forEach(input => {
+                    input.disabled = true;
+                });
+                this.disabled = true;
+                this.classList.remove('bg-blue-600', 'hover:bg-blue-700');
+                this.classList.add('bg-gray-400', 'cursor-not-allowed');
+            });
+        });
+    </script>
+</body>
+</html>
